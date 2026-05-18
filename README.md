@@ -20,6 +20,14 @@ Open the app at `http://localhost:8501`.
 - Batch CSV prediction
 - Streamlit interface
 
+## Tech Stack
+
+- Python 3
+- Streamlit for UI
+- PyCaret for model training and prediction
+- pandas for data processing
+- scikit-learn compatible regression workflow
+
 Built by Darshan Modi.
 
 ## License
