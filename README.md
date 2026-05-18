@@ -2,7 +2,7 @@
 
 ![App Banner](assets/banner.svg)
 
-A simple app to predict insurance charges.
+A simple and practical application that predicts insurance charges using patient details such as age, sex, BMI, number of children, smoking status, and region. Enter the patient profile or upload a batch CSV file to estimate insurance costs quickly and accurately.
 
 ## Run
 
