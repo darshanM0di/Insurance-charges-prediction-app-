@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Charges Prediction App - UI Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f6;
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 320px;
+            background: white;
+            border-right: 1px solid #e0e2e6;
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+        
+        .sidebar-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .sidebar-info {
+            background: #f0f2f6;
+            border-left: 4px solid #667eea;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #555;
+            line-height: 1.5;
+        }
+        
+        .selectbox-label {
+            font-weight: 600;
+            font-size: 12px;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .selectbox {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e0e2e6;
+            border-radius: 4px;
+            background: white;
+            font-size: 13px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        
+        .main {
+            flex: 1;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .header-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(to bottom, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 3px solid white;
+        }
+        
+        .content {
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .title {
+            color: white;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .input-field, .select-field {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e0e2e6;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: inherit;
+        }
+        
+        .input-field:focus, .select-field:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-group input {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .predict-button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        
+        .predict-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .predict-button:active {
+            transform: translateY(0);
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-left: 4px solid #28a745;
+            color: #155724;
+            padding: 16px;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-size: 15px;
+        }
+        
+        .success-icon {
+            color: #28a745;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .currency {
+            font-weight: 700;
+            color: #28a745;
+            font-size: 18px;
+        }
+        
+        .batch-section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-bottom: 20px;
+        }
+        
+        .file-upload {
+            border: 2px dashed #e0e2e6;
+            border-radius: 4px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f9f9f9;
+        }
+        
+        .file-upload:hover {
+            border-color: #667eea;
+            background: #f5f5ff;
+        }
+        
+        .file-upload-icon {
+            font-size: 32px;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .file-upload-text {
+            color: #555;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .table-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        th {
+            background: #f5f5f5;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #e0e2e6;
+            color: #333;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e2e6;
+        }
+        
+        tr:hover {
+            background: #f9f9f9;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                max-height: none;
+                border-right: none;
+                border-bottom: 1px solid #e0e2e6;
+            }
+            
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .documentation {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .documentation h3 {
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .documentation p {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="sidebar-image">🖼️ Header Image</div>
+        
+        <div class="sidebar-info">
+            ℹ️ App is created for patient hospital charges
+        </div>
+        
+        <div class="sidebar-image" style="height: 150px; margin-bottom: 20px;">📸 Sidebar Image</div>
+        
+        <div class="selectbox-label">How would you like to predict?</div>
+        <select class="selectbox" id="modeSelect" onchange="toggleMode()">
+            <option value="online">online</option>
+            <option value="batch">batch</option>
+        </select>
+    </div>
+    
+    <!-- MAIN CONTENT -->
+    <div class="main">
+        <div class="header-image">🏥 Insurance Header Image</div>
+        
+        <div class="content">
+            <div class="title">Insurance Charges Prediction App</div>
+            
+            <!-- ONLINE MODE -->
+            <div id="onlineMode" class="tab-content active">
+                <div class="form-group">
+                    <div class="input-group">
+                        <label class="label">Age</label>
+                        <input type="number" class="input-field" value="25" min="18" max="100" placeholder="Enter age between 18-100">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="label">Sex</label>
+                        <select class="select-field">
+                            <option>female</option>
+                            <option selected>male</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="label">BMI</label>
+                        <input type="number" class="input-field" value="28.5" min="10" max="50" step="0.1" placeholder="Enter BMI between 10-50">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="label">Children</label>
+                        <select class="select-field">
+                            <option>0</option>
+                            <option>1</option>
+                            <option selected>2</option>
+                            <option>3</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="label">Smoker</label>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="smoker">
+                            <label for="smoker" style="margin: 0; font-weight: normal; color: #666;">Yes</label>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="label">Region</label>
+                        <select class="select-field">
+                            <option>southwest</option>
+                            <option>southeast</option>
+                            <option>northwest</option>
+                            <option selected>northeast</option>
+                        </select>
+                    </div>
+                    
+                    <button class="predict-button" onclick="predictOnline()">Predict</button>
+                </div>
+                
+                <div class="success-box">
+                    <span class="success-icon">✓</span>The predicted insurance charge is <span class="currency">$13,450.82</span>
+                </div>
+            </div>
+            
+            <!-- BATCH MODE -->
+            <div id="batchMode" class="tab-content">
+                <div class="batch-section">
+                    <label class="label">Upload CSV file for predictions</label>
+                    <div class="file-upload">
+                        <div class="file-upload-icon">📁</div>
+                        <div class="file-upload-text">Choose CSV file</div>
+                        <div style="font-size: 12px; color: #999;">Drag and drop or click to browse</div>
+                    </div>
+                    <button class="predict-button">Predict</button>
+                </div>
+                
+                <div class="table-container">
+                    <h3 style="margin-bottom: 15px;">Batch Predictions Results</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Age</th>
+                                <th>Sex</th>
+                                <th>BMI</th>
+                                <th>Children</th>
+                                <th>Smoker</th>
+                                <th>Region</th>
+                                <th>Prediction</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>35</td>
+                                <td>male</td>
+                                <td>28.5</td>
+                                <td>2</td>
+                                <td>no</td>
+                                <td>northeast</td>
+                                <td><span class="currency">$13,450.82</span></td>
+                            </tr>
+                            <tr>
+                                <td>42</td>
+                                <td>female</td>
+                                <td>32.1</td>
+                                <td>1</td>
+                                <td>yes</td>
+                                <td>southeast</td>
+                                <td><span class="currency">$24,567.90</span></td>
+                            </tr>
+                            <tr>
+                                <td>28</td>
+                                <td>male</td>
+                                <td>25.0</td>
+                                <td>0</td>
+                                <td>no</td>
+                                <td>southwest</td>
+                                <td><span class="currency">$5,678.45</span></td>
+                            </tr>
+                            <tr>
+                                <td>51</td>
+                                <td>female</td>
+                                <td>29.3</td>
+                                <td>3</td>
+                                <td>yes</td>
+                                <td>northwest</td>
+                                <td><span class="currency">$28,934.12</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- DOCUMENTATION -->
+            <div class="documentation">
+                <h3>📋 About This Application</h3>
+                <p>
+                    This application uses a machine learning model trained on insurance data to predict insurance charges 
+                    based on personal health and demographic information. The model was trained using PyCaret, an AutoML framework.
+                </p>
+                
+                <h3>🎯 Features</h3>
+                <p>
+                    <strong>Online Mode:</strong> Enter individual patient information and get instant prediction<br>
+                    <strong>Batch Mode:</strong> Upload a CSV file with multiple records for bulk predictions
+                </p>
+                
+                <h3>📊 Input Parameters</h3>
+                <p>
+                    <strong>Age:</strong> 18-100 years<br>
+                    <strong>Sex:</strong> Male or Female<br>
+                    <strong>BMI:</strong> Body Mass Index (10-50)<br>
+                    <strong>Children:</strong> Number of dependents (0-10)<br>
+                    <strong>Smoker:</strong> Current smoking status<br>
+                    <strong>Region:</strong> Geographic region (SW, SE, NW, NE)
+                </p>
+                
+                <h3>💡 How It Works</h3>
+                <p>
+                    1. Enter patient information in the form<br>
+                    2. Click the "Predict" button<br>
+                    3. The ML model processes the input<br>
+                    4. Predicted insurance charge is displayed
+                </p>
+                
+                <h3>🔒 Security</h3>
+                <p>
+                    All predictions are performed locally. No data is stored or transmitted to external servers.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleMode() {
+            const mode = document.getElementById('modeSelect').value;
+            document.getElementById('onlineMode').classList.toggle('active', mode === 'online');
+            document.getElementById('batchMode').classList.toggle('active', mode === 'batch');
+        }
+        
+        function predictOnline() {
+            alert('Prediction submitted! The model would process this data and return the insurance charge.');
+        }
+    </script>
+</body>
+</html>
