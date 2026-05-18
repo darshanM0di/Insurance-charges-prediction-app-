@@ -15,25 +15,46 @@ def predict(model, input_df):
     return prediction_value
 
 def run():
+    st.set_page_config(
+        page_title='Insurance Charges Prediction',
+        page_icon='💊',
+        layout='centered',
+        initial_sidebar_state='expanded',
+    )
+
     root_dir = os.path.abspath(os.path.join(BASE_DIR, os.pardir))
     assets_dir = os.path.join(root_dir, 'assets')
-    i = Image.open(os.path.join(assets_dir, 'image.png'))
-    h = Image.open(os.path.join(assets_dir, 'image.jpeg'))
+    header_image = Image.open(os.path.join(assets_dir, 'image.png'))
+    sidebar_image = Image.open(os.path.join(assets_dir, 'image.jpeg'))
 
-    st.image(i)
-    st.sidebar.info('App is created for patient hospital charges')
-    st.sidebar.image(h)
+    st.markdown(
+        """
+        <div style='background: linear-gradient(135deg, #0d6efd 0%, #20c997 100%); padding: 24px; border-radius: 16px;'>
+            <h1 style='color: white; text-align: center; margin: 0;'>Insurance Charges Prediction App</h1>
+            <p style='color: #e8f9ff; text-align: center; font-size: 18px; margin: 8px 0 0;'>Predict patient insurance costs with a beautiful, fast, and reliable UI.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.image(header_image, use_column_width=True)
+    st.write('### Predict insurance charges using your patient profile or batch data upload')
 
-    add_selectbox = st.sidebar.selectbox("How would you like to predict?", ('online','batch'))
-    st.title('Insurance Charges Prediction App')
+    st.sidebar.header('Prediction modes')
+    st.sidebar.info('Choose online single prediction or batch CSV scoring.')
+    st.sidebar.image(sidebar_image, use_column_width=True)
 
-    if add_selectbox == 'online':
-        age = st.number_input("Age", min_value=18, max_value=100, value=25)
-        sex = st.selectbox("Sex", ["male", "female"])
-        bmi = st.number_input("BMI", min_value=10.0, max_value=50.0, value=10.0, step=1.0)
-        children = st.selectbox("Children", list(range(0, 11)))
-        smoker = 'yes' if st.checkbox("Smoker") else 'no'
-        region = st.selectbox("Region", ["southwest", "southeast", "northwest", "northeast"])
+    mode = st.sidebar.selectbox('How would you like to predict?', ('online', 'batch'))
+
+    if mode == 'online':
+        col1, col2 = st.columns(2)
+        with col1:
+            age = st.number_input('Age', min_value=18, max_value=100, value=35)
+            sex = st.selectbox('Sex', ['male', 'female'])
+            bmi = st.number_input('BMI', min_value=10.0, max_value=50.0, value=28.5, step=0.1)
+        with col2:
+            children = st.selectbox('Children', list(range(0, 11)))
+            smoker = 'yes' if st.checkbox('Smoker') else 'no'
+            region = st.selectbox('Region', ['southwest', 'southeast', 'northwest', 'northeast'])
 
         input_dict = {
             'age': age,
@@ -41,20 +62,26 @@ def run():
             'bmi': bmi,
             'children': children,
             'smoker': smoker,
-            'region': region
+            'region': region,
         }
         input_df = pd.DataFrame([input_dict])
 
-        if st.button("Predict"):
-            output = predict(MODEL, input_df)  # use wrapper
-            st.success(f'The predicted insurance charge is ${output:.2f}')
+        if st.button('Predict'):
+            output = predict(MODEL, input_df)
+            st.metric(label='Estimated Insurance Charge', value=f'${output:,.2f}')
+            st.write('#### Input summary')
+            st.table(input_df)
     else:
-        file_upload = st.file_uploader("Upload CSV file for predictions", type=["csv"])
+        file_upload = st.file_uploader('Upload CSV file for predictions', type=['csv'])
         if file_upload is not None:
             input_df = pd.read_csv(file_upload)
-            if st.button("Predict"):
+            if st.button('Predict'):
                 predictions_df = predict_model(MODEL, data=input_df)
-                st.write(predictions_df)        
+                predictions_df['prediction_label'] = predictions_df['prediction_label'].round(2)
+                st.success('Batch prediction completed successfully')
+                st.write(predictions_df)
+                csv_data = predictions_df.to_csv(index=False).encode('utf-8')
+                st.download_button('Download predictions', csv_data, 'insurance_predictions.csv', 'text/csv')
 
 if __name__ == '__main__':
     run()
