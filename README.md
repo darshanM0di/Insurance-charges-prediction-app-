@@ -21,3 +21,7 @@ Open the app at `http://localhost:8501`.
 - Streamlit interface
 
 Built by Darshan Modi.
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
